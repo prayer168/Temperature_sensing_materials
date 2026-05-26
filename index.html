@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>感溫材料的成分、原理與探究教學</title>
+  <style>
+    :root {
+      --bg: #fff8f0;
+      --card: #ffffff;
+      --ink: #2f2a24;
+      --muted: #6f6258;
+      --primary: #d94f30;
+      --primary-dark: #a53622;
+      --secondary: #f59e0b;
+      --soft: #ffe8d6;
+      --soft2: #fff1cc;
+      --line: #efd6c7;
+      --green: #1f8a70;
+      --blue: #3867d6;
+      --shadow: 0 12px 30px rgba(133, 82, 45, 0.14);
+      --radius: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 205, 86, 0.28), transparent 34%),
+        radial-gradient(circle at top right, rgba(217, 79, 48, 0.12), transparent 30%),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.75;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .hero {
+      padding: 54px 20px 34px;
+      background:
+        linear-gradient(135deg, rgba(217, 79, 48, 0.95), rgba(245, 158, 11, 0.86)),
+        url("data:image/svg+xml,%3Csvg width='140' height='140' viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(255,255,255,.22)' stroke-width='3'%3E%3Cpath d='M20 92c14-16 30-16 44 0s30 16 44 0'/%3E%3Ccircle cx='34' cy='38' r='12'/%3E%3Cpath d='M34 50v44'/%3E%3Cpath d='M92 36c18 20 18 42 0 62'/%3E%3C/g%3E%3C/svg%3E");
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.32);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 1.15;
+      margin: 18px 0 16px;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+      max-width: 760px;
+      margin: 0;
+      color: rgba(255,255,255,.93);
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.36);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(65, 28, 12, .16);
+      backdrop-filter: blur(8px);
+    }
+
+    .thermo-visual {
+      display: grid;
+      gap: 12px;
+    }
+
+    .tube {
+      height: 230px;
+      width: 70px;
+      border: 5px solid rgba(255,255,255,.75);
+      border-radius: 999px 999px 26px 26px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,.18);
+    }
+
+    .tube::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      right: 7px;
+      bottom: 7px;
+      height: 72%;
+      border-radius: 999px 999px 20px 20px;
+      background: linear-gradient(to top, #1f8a70, #f5c542, #f06d3f, #d9281e);
+      animation: rise 3.2s ease-in-out infinite alternate;
+    }
+
+    .tube::after {
+      content: "";
+      position: absolute;
+      width: 96px;
+      height: 96px;
+      left: 50%;
+      bottom: -45px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: #d9281e;
+      border: 5px solid rgba(255,255,255,.75);
+    }
+
+    @keyframes rise {
+      from { height: 44%; }
+      to { height: 78%; }
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .chip {
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.35);
+      padding: 7px 11px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255,248,240,.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-inner {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 10px 16px;
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .nav-inner a {
+      white-space: nowrap;
+      text-decoration: none;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 13px;
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: .92rem;
+    }
+
+    main {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 32px 18px 70px;
+    }
+
+    section {
+      margin: 34px 0;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .badge {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      font-weight: 900;
+      box-shadow: var(--shadow);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.4vw, 2.15rem);
+      line-height: 1.25;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin: 8px 0 10px;
+      color: var(--primary-dark);
+    }
+
+    .lead {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-top: 0;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .mini-card {
+      background: linear-gradient(180deg, white, #fffaf4);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .quote {
+      border-left: 6px solid var(--primary);
+      background: var(--soft);
+      padding: 18px 20px;
+      border-radius: 18px;
+      font-size: 1.12rem;
+      font-weight: 800;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .flow .step {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      font-weight: 800;
+      position: relative;
+    }
+
+    .flow .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-size: 1.35rem;
+      font-weight: 900;
+      z-index: 2;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 680px;
+      background: white;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1dfd2;
+      vertical-align: top;
+    }
+
+    th {
+      background: #fff1cc;
+      color: #6d3b09;
+      font-weight: 900;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0;
+      margin: 12px 0 0;
+      list-style: none;
+    }
+
+    .pill-list li {
+      background: var(--soft2);
+      border: 1px solid #f4d789;
+      color: #6d3b09;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-weight: 800;
+    }
+
+    .activity {
+      border-left: 8px solid var(--green);
+    }
+
+    .activity:nth-child(2) {
+      border-left-color: var(--blue);
+    }
+
+    .activity:nth-child(3) {
+      border-left-color: var(--primary);
+    }
+
+    .teacher-note {
+      background: #f2fff9;
+      border: 1px solid #b8ebd8;
+      color: #145743;
+    }
+
+    .warning {
+      background: #fff5f5;
+      border: 1px solid #ffc9c9;
+      color: #7b1e1e;
+    }
+
+    .board {
+      background: #263238;
+      color: #f5f5f5;
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      font-family: "Noto Sans Mono", "Consolas", monospace;
+      white-space: pre-wrap;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 14px;
+      align-items: start;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .time {
+      color: var(--primary-dark);
+      font-weight: 900;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 16px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: rgba(255,255,255,.5);
+    }
+
+    .print-btn {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 20;
+      border: 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 12px 18px;
+      border-radius: 999px;
+      font-weight: 900;
+      box-shadow: 0 12px 28px rgba(137, 54, 23, .28);
+      cursor: pointer;
+    }
+
+    @media (max-width: 860px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+      }
+      .hero-card {
+        order: -1;
+      }
+      .grid-2, .grid-3, .flow {
+        grid-template-columns: 1fr;
+      }
+      .flow .step:not(:last-child)::after {
+        content: "↓";
+        right: 50%;
+        top: auto;
+        bottom: -20px;
+        transform: translateX(50%);
+      }
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+      table {
+        min-width: 620px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .hero {
+        padding: 34px 16px 26px;
+      }
+      main {
+        padding-inline: 14px;
+      }
+      .card {
+        padding: 18px;
+      }
+      .print-btn {
+        left: 18px;
+        right: 18px;
+      }
+      .tube {
+        height: 180px;
+      }
+      table {
+        min-width: 560px;
+      }
+    }
+
+    @media print {
+      nav, .print-btn {
+        display: none;
+      }
+      body {
+        background: white;
+      }
+      .card, .table-wrap, .mini-card {
+        box-shadow: none;
+      }
+      section {
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">🌡️ 國小自然・材料科學・探究教學</div>
+        <h1>感溫材料的成分、原理與生活應用</h1>
+        <p class="subtitle">
+          透過會變色的材料，把「看不見的溫度變化」轉換成「看得見的顏色證據」，
+          引導學生學習溫度、熱傳播、材料性質與生活科技。
+        </p>
+      </div>
+      <div class="hero-card">
+        <div class="thermo-visual">
+          <div class="tube" aria-label="感溫視覺圖示"></div>
+          <div class="chips">
+            <span class="chip">變色杯</span>
+            <span class="chip">額溫片</span>
+            <span class="chip">魚缸溫度計</span>
+            <span class="chip">防燙貼紙</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-inner">
+      <a href="#what">是什麼</a>
+      <a href="#ingredients">成分</a>
+      <a href="#principle">原理</a>
+      <a href="#life">生活應用</a>
+      <a href="#inquiry">探究活動</a>
+      <a href="#lesson">教學流程</a>
+      <a href="#summary">課堂總結</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="what">
+      <div class="section-title">
+        <span class="badge">1</span>
+        <h2>感溫材料是什麼？</h2>
+      </div>
+      <div class="card">
+        <p class="lead">
+          感溫材料通常指「熱致變色材料」，英文為 <strong>Thermochromic materials</strong>。
+          它會因為溫度改變而產生顏色變化。
+        </p>
+        <div class="quote">溫度改變 → 材料內部分子排列或化學狀態改變 → 吸收／反射的光改變 → 眼睛看到不同顏色</div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px;">
+        <table>
+          <thead>
+            <tr>
+              <th>類型</th>
+              <th>常見名稱</th>
+              <th>變色特色</th>
+              <th>教學適合度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>感溫變色粉／油墨</td>
+              <td>隱色染料系統</td>
+              <td>到某溫度後「有色 ↔ 無色」或變成另一色</td>
+              <td>很適合</td>
+            </tr>
+            <tr>
+              <td>感溫液晶片</td>
+              <td>Thermochromic liquid crystal</td>
+              <td>隨溫度呈現紅、綠、藍等連續色彩</td>
+              <td>很適合</td>
+            </tr>
+            <tr>
+              <td>不可逆感溫貼紙</td>
+              <td>溫度記錄標籤</td>
+              <td>到達某溫度後永久變色</td>
+              <td>適合安全與紀錄用途</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="ingredients">
+      <div class="section-title">
+        <span class="badge">2</span>
+        <h2>感溫材料裡面有什麼成分？</h2>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>一、隱色染料型：感溫粉、感溫油墨</h3>
+          <p>
+            市面上的變色杯、變色湯匙、變色貼紙、變色顏料，多半屬於這一類。
+            它通常不是單一化學物，而是用微膠囊包住幾種材料。
+          </p>
+          <ul class="pill-list">
+            <li>隱色染料</li>
+            <li>顯色劑</li>
+            <li>低熔點溶劑</li>
+            <li>微膠囊外殼</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>二、感溫液晶型：額溫片、魚缸溫度計</h3>
+          <p>
+            液晶型不是靠顏料本身變色，而是靠液晶分子排列改變，
+            反射不同波長的光，因此可呈現接近彩虹般的連續顏色變化。
+          </p>
+          <ul class="pill-list">
+            <li>膽固醇型液晶</li>
+            <li>螺旋排列</li>
+            <li>選擇性反射</li>
+            <li>溫度區間顯示</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px;">
+        <table>
+          <thead>
+            <tr>
+              <th>成分</th>
+              <th>作用</th>
+              <th>學生可理解的比喻</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>隱色染料 Leuco dye</td>
+              <td>決定顏色來源</td>
+              <td>會開關顏色的顏料</td>
+            </tr>
+            <tr>
+              <td>顯色劑 Developer</td>
+              <td>幫助染料顯色</td>
+              <td>打開顏色的鑰匙</td>
+            </tr>
+            <tr>
+              <td>溶劑／相變材料 Solvent</td>
+              <td>控制在什麼溫度變色</td>
+              <td>溫度開關</td>
+            </tr>
+            <tr>
+              <td>微膠囊外殼</td>
+              <td>保護內部成分，方便混入油墨或塑膠</td>
+              <td>小小透明保護球</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="principle">
+      <div class="section-title">
+        <span class="badge">3</span>
+        <h2>變色原理：為什麼溫度一變，顏色也變？</h2>
+      </div>
+
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>隱色染料型：溫度控制的顏色開關</h3>
+          <p>
+            低溫時，溶劑多為固態，染料和顯色劑互相作用，呈現有色狀態。
+            溫度升高後，溶劑熔化，染料和顯色劑的作用改變，
+            染料分子結構轉換，顏色就可能變淡、消失或變成另一種顏色。
+          </p>
+        </div>
+        <div class="card">
+          <h3>液晶型：溫度控制的彩虹反射片</h3>
+          <p>
+            液晶分子像一層一層的螺旋結構。溫度改變時，螺旋間距跟著改變，
+            反射出的光波長也不同，所以會看到紅、綠、藍、紫等顏色變化。
+          </p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px;">
+        <h3>給學生的流程圖</h3>
+        <div class="flow">
+          <div class="step">溫度改變</div>
+          <div class="step">分子狀態改變</div>
+          <div class="step">吸收／反射光改變</div>
+          <div class="step">看到不同顏色</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="life">
+      <div class="section-title">
+        <span class="badge">4</span>
+        <h2>生活中的應用</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>應用物品</th>
+              <th>使用的感溫原理</th>
+              <th>功能</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>變色馬克杯</td>
+              <td>隱色染料型</td>
+              <td>倒入熱水後圖案出現或消失</td>
+            </tr>
+            <tr>
+              <td>感溫湯匙</td>
+              <td>隱色染料型</td>
+              <td>提醒食物太熱或太冷</td>
+            </tr>
+            <tr>
+              <td>奶瓶溫度貼紙</td>
+              <td>感溫油墨或液晶</td>
+              <td>判斷是否接近適飲溫度</td>
+            </tr>
+            <tr>
+              <td>額溫片</td>
+              <td>液晶型</td>
+              <td>粗略顯示皮膚表面溫度</td>
+            </tr>
+            <tr>
+              <td>魚缸溫度計</td>
+              <td>液晶型</td>
+              <td>顯示水溫範圍</td>
+            </tr>
+            <tr>
+              <td>電池電量測試條</td>
+              <td>電阻發熱＋感溫油墨</td>
+              <td>透過局部變色判斷電池狀態</td>
+            </tr>
+            <tr>
+              <td>防燙標籤</td>
+              <td>感溫油墨</td>
+              <td>提醒杯子、鍋具、管線表面過熱</td>
+            </tr>
+            <tr>
+              <td>冷鏈運輸標籤</td>
+              <td>可逆或不可逆感溫材料</td>
+              <td>紀錄食品、疫苗、藥品是否曾超溫</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="inquiry">
+      <div class="section-title">
+        <span class="badge">5</span>
+        <h2>國小自然探究活動設計</h2>
+      </div>
+      <p class="lead">課程主題建議：<strong>會變色的溫度偵探：感溫材料的祕密</strong></p>
+
+      <div class="grid grid-3">
+        <div class="card activity">
+          <h3>活動一：感溫貼紙變色溫度測試</h3>
+          <p><strong>研究問題：</strong>感溫貼紙在幾度時開始變色？升溫和降溫時，變色溫度一樣嗎？</p>
+          <p><strong>材料：</strong>感溫貼紙、溫度計、透明杯、熱水、常溫水、冰水、夾鏈袋、紀錄表。</p>
+          <p><strong>重點：</strong>建立溫度與顏色變化的對應關係。</p>
+        </div>
+        <div class="card activity">
+          <h3>活動二：不同材質對變色速度的影響</h3>
+          <p><strong>研究問題：</strong>感溫材料貼在不同材質上，變色速度會一樣嗎？</p>
+          <p><strong>可比較材質：</strong>金屬片、玻璃、塑膠、木片、紙板。</p>
+          <p><strong>重點：</strong>連結熱傳導概念，觀察熱在不同材料中傳得快不快。</p>
+        </div>
+        <div class="card activity">
+          <h3>活動三：自製感溫變色小卡</h3>
+          <p><strong>材料：</strong>感溫變色粉、白膠或壓克力透明膠、厚紙卡、棉花棒、溫水袋、冰袋。</p>
+          <p><strong>重點：</strong>將材料科學轉化為科學市集或創客作品。</p>
+        </div>
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px;">
+        <table>
+          <thead>
+            <tr>
+              <th>探究題目</th>
+              <th>操縱變因</th>
+              <th>應變變因</th>
+              <th>控制變因提醒</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>哪一種水溫讓感溫片變色最明顯？</td>
+              <td>水溫</td>
+              <td>顏色明顯程度</td>
+              <td>同一片感溫片、觀察時間一致</td>
+            </tr>
+            <tr>
+              <td>升溫和降溫時變化一樣嗎？</td>
+              <td>升溫／降溫</td>
+              <td>變色溫度、恢復時間</td>
+              <td>水量、感溫片大小一致</td>
+            </tr>
+            <tr>
+              <td>哪種材質讓感溫貼紙最快變色？</td>
+              <td>材質</td>
+              <td>變色所需時間</td>
+              <td>熱源溫度、接觸面積一致</td>
+            </tr>
+            <tr>
+              <td>感溫顏料厚薄會影響變色速度嗎？</td>
+              <td>塗層厚度</td>
+              <td>變色時間</td>
+              <td>顏料配比、加熱方式一致</td>
+            </tr>
+            <tr>
+              <td>重複加熱冷卻後會變差嗎？</td>
+              <td>循環次數</td>
+              <td>顏色明顯程度</td>
+              <td>每次加熱時間與冷卻時間一致</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid grid-2" style="margin-top:18px;">
+        <div class="card teacher-note">
+          <h3>教師提醒</h3>
+          <p>
+            感溫材料很適合搭配「預測 → 觀察 → 紀錄 → 比較 → 解釋」的探究流程。
+            老師可鼓勵學生用數據與顏色證據說明自己的發現。
+          </p>
+        </div>
+        <div class="card warning">
+          <h3>安全提醒</h3>
+          <p>
+            感溫粉不要吸入、不要接觸眼口。學生操作時建議戴口罩與手套，
+            可由老師先調好顏料。避免用火直接加熱，以免燙傷或材料分解。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="lesson">
+      <div class="section-title">
+        <span class="badge">6</span>
+        <h2>80 分鐘教學流程建議</h2>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="time">0–10 分</div>
+          <div>
+            <strong>引起動機：</strong>展示變色杯、感溫貼紙或感溫湯匙，提問「為什麼顏色會變？」
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">10–25 分</div>
+          <div>
+            <strong>概念建立：</strong>介紹感溫材料類型、隱色染料型與液晶型差異。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">25–55 分</div>
+          <div>
+            <strong>小組探究：</strong>測試不同水溫或不同材質下的變色時間與明顯程度。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">55–70 分</div>
+          <div>
+            <strong>資料整理：</strong>各組完成表格，討論變因控制是否公平。
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="time">70–80 分</div>
+          <div>
+            <strong>發表與總結：</strong>學生用「證據」說明自己的結論，連結生活應用。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="summary">
+      <div class="section-title">
+        <span class="badge">7</span>
+        <h2>學生版重點整理</h2>
+      </div>
+
+      <div class="card">
+        <p class="lead">
+          感溫材料就像一個會看溫度變臉的小偵探。當溫度改變時，
+          材料裡面的分子排列或分子形狀會改變，吸收或反射的光也會改變，
+          所以我們看到的顏色就不一樣。
+        </p>
+      </div>
+
+      <div class="board" style="margin-top:18px;">感溫材料
+＝ 會因溫度改變而變色的材料
+
+主要類型：
+1. 隱色染料型
+   成分：染料＋顯色劑＋溶劑＋微膠囊
+   原理：溫度改變 → 分子結構改變 → 顏色改變
+
+2. 液晶型
+   成分：膽固醇型／膽甾型液晶
+   原理：溫度改變 → 分子排列距離改變 → 反射光顏色改變
+
+生活應用：
+變色杯、額溫片、魚缸溫度計、防燙標籤、冷鏈標籤、玩具、衣物、電池電量指示
+
+探究方向：
+溫度、變色速度、材質導熱、重複使用、日照老化</div>
+    </section>
+  </main>
+
+  <button class="print-btn" onclick="window.print()">列印 / 另存 PDF</button>
+
+  <footer>
+    <p>感溫材料探究教學單頁教材｜RWD 響應式網頁版</p>
+  </footer>
+</body>
+</html>
